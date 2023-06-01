@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "dayjs": "^1.11.7"
+  },
+  "scripts": {
+    "start": "nodemon index.js",
+    "nodemon": "./node_modules/.bin/nodemon"
+  },
+  "devDependencies": {
+    "eslint": "^8.41.0",
+    "nodemon": "^2.0.22"
+  }
+}
