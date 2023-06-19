@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="start-screen">
+      <input type="text" id="name-input" placeholder="Name" />
+      <button id="start">start</button>
+    </form>
+    <div>
+      <div id="hero-start">
+        <p>name: <span id="hero-name" /></p>
+        <p>level: <span id="hero-level" /></p>
+        <p>hp:<span id="hero-hp" /></p>
+        <p>xp: <span id="hero-xp" /></p>
+        <p>att:<span id="hero-att" /></p>
+      </div>
+    </div>
+    <form id="game-menu">
+      <div id="menu-1">모험</div>
+      <div id="menu-2">휴식</div>
+      <div id="menu-3">종료</div>
+      <input type="text" id="menu-input" />
+      <button id="menu-button">입력</button>
+    </form>
+    <form id="battle-menu">
+      <div id="battle-1">모험</div>
+      <div id="battle-2">휴식</div>
+      <div id="battle-3">종료</div>
+      <input type="text" id="battle-input" />
+      <button id="battle-button">입력</button>
+    </form>
+    <div id="message"></div>
+    <form id="game-menu">
+      <div id="menu-1">모험</div>
+      <div id="menu-2">휴식</div>
+      <div id="menu-3">종료</div>
+      <input type="text" id="menu-input" />
+      <button id="game-button">입력</button>
+    </form>
+    <div id="monster-start">
+      <span id="monster-name"></span>
+      <span id="monster-hp"></span>
+      <span id="monster-xp"></span>
+      <span id="monster-att"></span>
+    </div>
+
+    <script>
+      const startScreen = document.querySelector("#start-screen");
+      const gameMenu = document.querySelector("#game-menu");
+      const battleMenu = document.querySelector("#battle-menu");
+      const heroName = document.querySelector("#hero-name");
+
+      const heroLevel = document.querySelector("#hero-level");
+      const heroHp = document.querySelector("#hero-hp");
+      const heroXp = document.querySelector("#hero-xp");
+      const heroAtt = document.querySelector("#hero-att");
+
+      const monsterName = document.querySelector("#monster-name");
+      const monsterHp = document.querySelector("#monster-hp");
+      const monsterAtt = document.querySelector("#monster-att");
+      const message = document.querySelector("#message");
+
+      const hero = {
+        name: "",
+        level: 1,
+        maxHp: 100,
+        hp: 100,
+        xp: 0, // level의 x 15
+        att: 10,
+      };
+
+      let monster = null;
+      const monsterList = [
+        { name: "슬라임", hp: 25, att: 10, xp: 10 },
+        { name: "슬라임", hp: 50, att: 15, xp: 20 },
+        { name: "마왕", hp: 150, att: 35, xp: 50 },
+      ];
+
+      startScreen.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = e.target["name-input"].value;
+        startScreen.style.display = "none";
+        gameMenu.style.display = "block";
+        heroName.textContent = name;
+        heroLevel.textContent = `${hero.level}`;
+        heroHp.textContent = `${hero.hp}`;
+        heroXp.textContent = `${hero.xp}`;
+        heroAtt.textContent = `${hero.att}`;
+        hero.name = name;
+      });
+    </script>
+  </body>
+</html>
