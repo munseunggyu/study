@@ -24,8 +24,8 @@
         transform-style: preserve-3d;
       }
 
-      .card-flipped .card-inner {
-        transform: rotateY("180deg");
+      .card.flipped .card-inner {
+        transform: rotateY(180deg);
       }
 
       .card-front {
@@ -42,7 +42,7 @@
       }
 
       .card-back {
-        transform: rotateY("180deg");
+        transform: rotateY(180deg);
       }
     </style>
   </head>
@@ -57,7 +57,7 @@
       let shuffled = [];
 
       function shuffle() {
-        for (let i = 0; i < colorCopy.length; i++) {
+        for (let i = 0; i < total; i++) {
           const randomIdx = Math.floor(Math.random() * colorCopy.length);
           shuffled = shuffled.concat(colorCopy.splice(randomIdx, 1));
         }
@@ -85,6 +85,18 @@
           const card = createCard(i);
           wrapper.appendChild(card);
         }
+        const cards = [...document.querySelectorAll(".card")];
+        cards.forEach((card, idx) => {
+          setTimeout(() => {
+            card.classList.add("flipped");
+          }, 1000 + 100 * idx);
+        });
+
+        setTimeout(() => {
+          cards.forEach((card, idx) => {
+            card.classList.remove("flipped");
+          });
+        }, 5000);
       }
       startGame();
     </script>
