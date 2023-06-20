@@ -5,6 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      #start-screen {
+      }
+      #game-menu {
+        display: none;
+      }
+      #battle-menu {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <form id="start-screen">
@@ -21,27 +31,27 @@
       </div>
     </div>
     <form id="game-menu">
-      <div id="menu-1">모험</div>
-      <div id="menu-2">휴식</div>
-      <div id="menu-3">종료</div>
+      <div id="menu-1">1. 모험</div>
+      <div id="menu-2">2. 휴식</div>
+      <div id="menu-3">3. 종료</div>
       <input type="text" id="menu-input" />
       <button id="menu-button">입력</button>
     </form>
     <form id="battle-menu">
-      <div id="battle-1">모험</div>
-      <div id="battle-2">휴식</div>
-      <div id="battle-3">종료</div>
+      <div id="battle-1">1. 공격</div>
+      <div id="battle-2">2. 회복</div>
+      <div id="battle-3">3. 도망</div>
       <input type="text" id="battle-input" />
       <button id="battle-button">입력</button>
     </form>
     <div id="message"></div>
-    <form id="game-menu">
+    <!-- <form id="game-menu">
       <div id="menu-1">모험</div>
       <div id="menu-2">휴식</div>
       <div id="menu-3">종료</div>
       <input type="text" id="menu-input" />
-      <button id="game-button">입력</button>
-    </form>
+      <button id="game-input">입력</button>
+    </form> -->
     <div id="monster-start">
       <span id="monster-name"></span>
       <span id="monster-hp"></span>
@@ -72,26 +82,132 @@
         hp: 100,
         xp: 0, // level의 x 15
         att: 10,
+        attack(monster) {
+          this.hp -= monster.att;
+          monster.hp -= this.att;
+          console.log(this.hp);
+          console.log(monster.att);
+        },
+        heal(monster) {
+          this.hp += 20;
+          this.hp -= monster.att;
+        },
       };
 
       let monster = null;
-      const monsterList = [
-        { name: "슬라임", hp: 25, att: 10, xp: 10 },
-        { name: "슬라임", hp: 50, att: 15, xp: 20 },
-        { name: "마왕", hp: 150, att: 35, xp: 50 },
-      ];
+      // const monsterList = [
+      //   { name: "슬라임", hp: 25, maxHp: 25, att: 10, xp: 10 },
+      //   { name: "늑대", hp: 50, maxHp: 50, att: 15, xp: 20 },
+      //   { name: "마왕", hp: 150, maxHp: 150, att: 35, xp: 50 },
+      // ];
 
+      class Game {
+        constructor() {
+          this.monster = null;
+          this.hero = null;
+          this.monsterList = [
+            { name: "슬라임", hp: 25, maxHp: 25, att: 10, xp: 10 },
+            { name: "늑대", hp: 50, maxHp: 50, att: 15, xp: 20 },
+            { name: "마왕", hp: 150, maxHp: 150, att: 35, xp: 50 },
+          ];
+        }
+      }
+
+      class Hero {
+        constructor(game, name) {
+          this.name = name;
+          this.hp = 100;
+          this.maxHp = 100;
+          this.att = 10;
+          this.xp = 0;
+        }
+        attack(target) {
+          this.hp -= target.att;
+          target.hp -= this.att;
+        }
+        heal(monster) {
+          this.hp += 20;
+          this.hp -= monster.att;
+        }
+      }
+      // const 슬라임 = new MonsterClass("슬라임", 25, 25, 10, 10);
+      // const 늑대 = new MonsterClass("늑대", 50, 50, 15, 20);
+      // const 마왕 = new MonsterClass("마왕", 150, 150, 35, 50);
+      // const monsterList = [슬라임, 늑대, 마왕];
+      let myHero;
+      let myGame;
       startScreen.addEventListener("submit", (e) => {
         e.preventDefault();
         const name = e.target["name-input"].value;
         startScreen.style.display = "none";
         gameMenu.style.display = "block";
+        myGame = new Game();
+        myHero = new Hero(myGame, name);
         heroName.textContent = name;
         heroLevel.textContent = `${hero.level}`;
         heroHp.textContent = `${hero.hp}`;
         heroXp.textContent = `${hero.xp}`;
         heroAtt.textContent = `${hero.att}`;
         hero.name = name;
+      });
+
+      gameMenu.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const select = e.target["menu-input"].value;
+        console.log(select, typeof select);
+        if (select === "1") {
+          gameMenu.style.display = "none";
+          battleMenu.style.display = "block";
+          e.target["menu-input"].value = "";
+          // monster = {
+          //   ...monsterList[Math.floor(Math.random() * monsterList.length)],
+          // };
+          console.log(
+            myGame.monsterList[
+              Math.floor(Math.random() * myGame.monsterList.length)
+            ]
+          );
+          myGame.monster = {
+            ...myGame.monsterList[
+              Math.floor(Math.random() * myGame.monsterList.length)
+            ],
+          };
+          monsterName.textContent = `Name: ${myGame.monster.name}`;
+          monsterHp.textContent = `HP: ${myGame.monster.hp}/${myGame.monster.maxHp}`;
+          monsterAtt.textContent = `Att: ${myGame.monster.att}`;
+        } else if (select === "2") {
+          console.log("휴식");
+          e.target["menu-input"].value = "";
+        } else if (select === "3") {
+          console.log("종료");
+          e.target["menu-input"].value = "";
+        } else {
+          alert("1, 2, 3 번중에서만 선택해주세요");
+        }
+      });
+
+      battleMenu.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const select = e.target["battle-input"].value;
+        console.log(select, typeof select);
+        if (select === "1") {
+          // 공격
+          // hero.attack(monster);
+          myHero.attack(myGame.monster);
+          heroHp.textContent = `${myHero.hp}`;
+          monsterHp.textContent = `HP: ${myGame.monster.hp}/${myGame.monster.maxHp}`;
+          console.log(myGame.monsterList);
+        } else if (select === "2") {
+          // 회복
+          console.log("휴식");
+          e.target["menu-input"].value = "";
+        } else if (select === "3") {
+          // 도망
+          console.log("종료");
+          e.target["menu-input"].value = "";
+        } else {
+          alert("1, 2, 3 번중에서만 선택해주세요");
+        }
       });
     </script>
   </body>
