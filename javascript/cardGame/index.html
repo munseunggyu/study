@@ -80,6 +80,31 @@
         return card;
       }
 
+      let clicked = [];
+      let compeleted = [];
+      function onClickCard() {
+        this.classList.toggle("flipped");
+        console.log(clicked);
+        clicked.push(this);
+        if (clicked.length !== 2) return;
+
+        const firstBackColor =
+          clicked[0].querySelector(".card-back").style.backgroundColor;
+        const secondBackColor =
+          clicked[1].querySelector(".card-back").style.backgroundColor;
+
+        if (firstBackColor === secondBackColor) {
+          compeleted.push(clicked[0], clicked[1]);
+          clicked = [];
+        } else {
+          setTimeout(() => {
+            clicked[0].classList.remove("flipped");
+            clicked[1].classList.remove("flipped");
+            clicked = [];
+          }, 500);
+        }
+      }
+
       let cards;
       function startGame() {
         shuffle();
@@ -90,25 +115,26 @@
         for (let i = 0; i < total; i += 1) {
           const card = createCard(i);
           wrapper.appendChild(card);
-          card.addEventListener("click", (e) => {
-            if (!finishedShuffled) return;
+          card.addEventListener("click", onClickCard);
+          //   card.addEventListener("click", (e) => {
+          //     if (!finishedShuffled) return;
 
-            if (pickList.length === 0 && allRight !== 12) {
-              card.classList.add("flipped");
-              pickList.push(card.id);
-              allRight += 1;
-            } else {
-              card.classList.add("flipped");
-              if (pickList[0] === card.id) {
-                pickList.pop();
-                allRight += 1;
-              } else {
-                setTimeout(() => {
-                  card.classList.remove("flipped");
-                }, 1000);
-              }
-            }
-          });
+          //     if (pickList.length === 0 && allRight !== 12) {
+          //       card.classList.add("flipped");
+          //       pickList.push(card.id);
+          //       allRight += 1;
+          //     } else {
+          //       card.classList.add("flipped");
+          //       if (pickList[0] === card.id) {
+          //         pickList.pop();
+          //         allRight += 1;
+          //       } else {
+          //         setTimeout(() => {
+          //           card.classList.remove("flipped");
+          //         }, 1000);
+          //       }
+          //     }
+          //   });
         }
         const cards = document.querySelectorAll(".card");
         cards.forEach((card, idx) => {
