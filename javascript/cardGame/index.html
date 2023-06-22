@@ -82,9 +82,10 @@
 
       let clicked = [];
       let compeleted = [];
+      let clickable = true;
       function onClickCard() {
+        if (!clickable) return;
         this.classList.toggle("flipped");
-        console.log(clicked);
         clicked.push(this);
         if (clicked.length !== 2) return;
 
@@ -97,9 +98,11 @@
           compeleted.push(clicked[0], clicked[1]);
           clicked = [];
         } else {
+          clickable = false;
           setTimeout(() => {
             clicked[0].classList.remove("flipped");
             clicked[1].classList.remove("flipped");
+            clickable = true;
             clicked = [];
           }, 500);
         }
