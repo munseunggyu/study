@@ -9,7 +9,7 @@ const server = http
       res.end(data);
     } catch (error) {
       console.log(error);
-      // res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
     }
   })
   .listen(8080);
